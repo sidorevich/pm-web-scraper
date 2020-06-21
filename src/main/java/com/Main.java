@@ -2,9 +2,9 @@ package com;
 
 import com.handler.WebParser;
 
-public class MainApp {
+public class Main {
 
     public static void main(String[] args) {
-        new WebParser().scrapWebSite();
+        new WebParser().runWebSiteParsing();
     }
 }

@@ -70,40 +70,85 @@ public final class Const {
     public static final String ID_ATTRIBUTE = "id";
 
     /**
-     * Стиль атрибут
+     * Атрибут стиля
      */
     public static final String STYLE_ATTRIBUTE = "style";
 
     /**
-     * Стиль атрибут
+     * Атрибут класса
      */
     public static final String CLASS_ATTRIBUTE = "class";
 
     /**
-     * Стиль атрибут
+     * Атрибут проставки
      */
     public static final String SPACE_ATTRIBUTE = "spacer";
 
     /**
-     * Стиль атрибут
+     * Атрибут сокрытия отображения
      */
-    public static final String NON_DISPLAY_ATTRIBUTE = "spacer";
+    public static final String NON_DISPLAY_ATTRIBUTE = "display:none";
 
     /**
-     * Стиль атрибут
+     * Паттерн даты
      */
     public static final String DATE_FORMAT_PATTERN = "yyyy-dd-MM hh:mm";
 
 
     /**
-     * Стиль атрибут
+     * Сообщение ошибки
      */
     public static final String ERROR_MSG = "Error message:";
 
     /**
-     * Стиль атрибут
+     * Путь и наименование конечного файла
      */
     public static final String REPORT_FILE_PATH = "report/report.html";
+
+    /**
+     * Атрибут ссылки
+     */
+    public static final String HREF_ATTRIBUTE = "href";
+
+    /**
+     * Атрибут рамки
+     */
+    public static final String BORDER_ATTRIBUTE = "border";
+
+    /**
+     * Заголовок вида спорта
+     */
+    public static final String KIND_SPORT_TITLE = "Вид спорта";
+
+    /**
+     * Заголовок турнира
+     */
+    public static final String EVENT_TABLE_TITLE = "Турнир";
+
+    /**
+     * Заголовок домашней команды
+     */
+    public static final String HOME_TEAM_TABLE_TITLE = "Домашная команда";
+
+    /**
+     * Заголовок гостевой команды
+     */
+    public static final String VISIT_TEAM_TABLE_TITLE = "Команда гостей";
+
+    /**
+     * Заголовок начала событий
+     */
+    public static final String DATE_START_TABLE_TITLE = "Начало события";
+
+    /**
+     * Заголовок ссылки
+     */
+    public static final String LINK_TABLE_TITLE = "Ссылка";
+
+    /**
+     * Значение отсутвует
+     */
+    public static final String MISSING_VALUE = "-";
 
 
     private Const() {

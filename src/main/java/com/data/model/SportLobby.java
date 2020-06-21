@@ -5,7 +5,7 @@ import java.util.List;
 public class SportLobby {
 
     private String link;
-    private String name ;
+    private String name;
     private String sportName;
     private String tableId;
     private List<BetInfo> betInfoList;

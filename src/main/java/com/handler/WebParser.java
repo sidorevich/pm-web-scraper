@@ -9,7 +9,6 @@ import com.gargoylesoftware.htmlunit.html.*;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.data.model.Const.*;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class WebParser {
 
@@ -86,7 +85,7 @@ public class WebParser {
 
     }
 
-    public void scrapWebSite() {
+    public void runWebSiteParsing() {
         logger.info("Starting scraping web site");
         long t = System.currentTimeMillis();
 
@@ -104,7 +103,7 @@ public class WebParser {
         betInfoData = sportLobbies
                 .parallelStream()
                 .unordered()
-                .map(this::some)
+                .map(this::scrapWebPage)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
@@ -155,9 +154,9 @@ public class WebParser {
     }
 
     private boolean isNotNecessaryBodies(HtmlTableBody htmlTable) {
-        return !htmlTable.getAttribute(STYLE_ATTRIBUTE).contains(NON_DISPLAY_ATTRIBUTE)
+        return (!htmlTable.getAttribute(STYLE_ATTRIBUTE).contains(NON_DISPLAY_ATTRIBUTE))
                 && (htmlTable.getAttributes() != null && htmlTable.getAttributes().getNamedItem(ID_ATTRIBUTE) == null)
-                && !htmlTable.getAttribute(CLASS_ATTRIBUTE).contains(SPACE_ATTRIBUTE);
+                && (!htmlTable.getAttribute(CLASS_ATTRIBUTE).contains(SPACE_ATTRIBUTE));
     }
 
     private boolean isContainsCellValue(HtmlTableBody tableBody, String value) {
@@ -190,7 +189,13 @@ public class WebParser {
                 .filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    private SportLobby some(SportLobby sportLobby) {
+    private SportLobby scrapWebPage(SportLobby sportLobby) {
+
+        if (sportLobby == null || isEmpty(sportLobby.getTableId()) || isBlank(sportLobby.getTableId())) {
+            logger.info("Can not get page, sportLobby or table empty");
+            return null;
+        }
+
         long t = System.currentTimeMillis();
 
         HtmlPage contentPage = null;
@@ -202,9 +207,9 @@ public class WebParser {
 
         try {
             contentPage = client.getPage(sb.toString());
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            logger.log(Level.WARNING, e.getMessage());
+            logger.log(Level.SEVERE, e.getMessage());
         }
 
         if (contentPage == null) {

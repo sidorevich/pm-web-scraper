@@ -31,93 +31,83 @@ public class HtmlGenerator {
 
     private static String getHtmContent(List<SportLobby> sportLobbies) {
         try {
-            Html html = new Html(null) {
+            Html htmlPage = new Html(null) {
                 Body body = new Body(this) {
-                    Table table = new Table(this, new CustomAttribute("border",
-                            "1px")) {
+                    Table table = new Table(this, new CustomAttribute(BORDER_ATTRIBUTE, "1px")) {
                         {
-                            Th th1 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "Вид спорта");
+                            Th kindSportTh = new Th(this) {
+                                Blank cellContent = new Blank(this, KIND_SPORT_TITLE);
                             };
-                            Th th2 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "Турнир");
+                            Th eventTh = new Th(this) {
+                                Blank cellContent = new Blank(this, EVENT_TABLE_TITLE);
                             };
-                            Th th3 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "Домашная команда");
+                            Th homeTeamTh = new Th(this) {
+                                Blank cellContent = new Blank(this, HOME_TEAM_TABLE_TITLE);
                             };
-                            Th th4 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "Команда гостей ");
+                            Th visitTeamTh = new Th(this) {
+                                Blank cellContent = new Blank(this, VISIT_TEAM_TABLE_TITLE);
                             };
-                            Th th5 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "Начало события");
+                            Th eventDateTh = new Th(this) {
+                                Blank cellContent = new Blank(this, DATE_START_TABLE_TITLE);
                             };
-                            Th th6 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "П1");
+                            Th homeTeamWinCoeffTh = new Th(this) {
+                                Blank cellContent = new Blank(this, P1_TITLE);
                             };
-                            Th th7 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "Х");
+                            Th drawCoeffTh = new Th(this) {
+                                Blank cellContent = new Blank(this, X_TITLE);
                             };
-                            Th th8 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "П2");
+                            Th visitTeamCoeffTh = new Th(this) {
+                                Blank cellContent = new Blank(this, P2_TITLE);
                             };
-                            Th th9 = new Th(this) {
-                                Blank cellContent = new Blank(this,
-                                        "Ссылка");
+                            Th linkTh = new Th(this) {
+                                Blank cellContent = new Blank(this, LINK_TABLE_TITLE);
                             };
                             for (final SportLobby sportLobby : sportLobbies) {
                                 for (BetInfo betInfo : sportLobby.getBetInfoList()) {
                                     Tr tr = new Tr(this) {
-                                        Td td1 = new Td(this) {
-                                            String sportName = sportLobby.getSportName() != null ? sportLobby.getSportName() : "-";
+                                        Td kindSportTd = new Td(this) {
+                                            String sportName = sportLobby.getSportName() != null ? sportLobby.getSportName() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, sportName);
                                         };
-                                        Td td2 = new Td(this) {
-                                            String eventName = sportLobby.getName() != null ? sportLobby.getName() : "-";
+                                        Td eventTd = new Td(this) {
+                                            String eventName = sportLobby.getName() != null ? sportLobby.getName() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, eventName);
                                         };
-                                        Td td3 = new Td(this) {
-                                            String homeTeam = betInfo.getHomeTeam() != null ? betInfo.getHomeTeam() : "-";
+                                        Td homeTeamTd = new Td(this) {
+                                            String homeTeam = betInfo.getHomeTeam() != null ? betInfo.getHomeTeam() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, homeTeam);
                                         };
-                                        Td td4 = new Td(this) {
-                                            String visitTeam = betInfo.getVisitTeam() != null ? betInfo.getVisitTeam() : "-";
+                                        Td visitTeamTd = new Td(this) {
+                                            String visitTeam = betInfo.getVisitTeam() != null ? betInfo.getVisitTeam() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, visitTeam);
                                         };
-                                        Td td5 = new Td(this) {
-                                            String dateLong = betInfo.getDate() != null ? betInfo.getDate().toString() : "-";
+                                        Td eventDateTd = new Td(this) {
+                                            String dateLong = betInfo.getDate() != null ? betInfo.getDate().toString() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, dateLong);
 
                                         };
-                                        Td td6 = new Td(this) {
+                                        Td homeTeamWinCoeffTd = new Td(this) {
                                             CoeffInfo winnerCoeffVal = betInfo.getCoefficients().get(P1_TITLE);
-                                            String winnerCoeff = (winnerCoeffVal != null && winnerCoeffVal.getValue() != null) ? winnerCoeffVal.getValue().toString() : "-";
+                                            String winnerCoeff = (winnerCoeffVal != null && winnerCoeffVal.getValue() != null) ? winnerCoeffVal.getValue().toString() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, winnerCoeff);
 
 
                                         };
-                                        Td td7 = new Td(this) {
+                                        Td drawCoeffTd = new Td(this) {
                                             CoeffInfo drawCoeffVal = betInfo.getCoefficients().get(X_TITLE);
-                                            String drawCoeff = (drawCoeffVal != null && drawCoeffVal.getValue() != null) ? drawCoeffVal.getValue().toString() : "-";
+                                            String drawCoeff = (drawCoeffVal != null && drawCoeffVal.getValue() != null) ? drawCoeffVal.getValue().toString() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, drawCoeff);
 
                                         };
-                                        Td td8 = new Td(this) {
+                                        Td visitTeamCoeffTd = new Td(this) {
                                             CoeffInfo visitWinVal = betInfo.getCoefficients().get(P2_TITLE);
-                                            String visitWin = (visitWinVal != null && visitWinVal.getValue() != null) ? visitWinVal.getValue().toString() : "-";
+                                            String visitWin = (visitWinVal != null && visitWinVal.getValue() != null) ? visitWinVal.getValue().toString() : MISSING_VALUE;
                                             Blank cellContent = new Blank(this, visitWin);
 
                                         };
-                                        Td td9 = new Td(this) {
-                                            String link = sportLobby.getLink() != null ? sportLobby.getLink() : "-";
-                                            A a = new A(this, new CustomAttribute("href", link)) {
+                                        Td linkTd = new Td(this) {
+                                            String link = sportLobby.getLink() != null ? sportLobby.getLink() : MISSING_VALUE;
+                                            A a = new A(this, new CustomAttribute(HREF_ATTRIBUTE, link)) {
                                                 Blank cellContent = new Blank(this, link);
                                             };
                                         };
@@ -129,9 +119,9 @@ public class HtmlGenerator {
                 };
             };
 
-            html.setPrependDocType(true);
+            htmlPage.setPrependDocType(true);
 
-            return html.toHtmlString();
+            return htmlPage.toHtmlString();
         } catch (Exception e) {
             logger.log(Level.SEVERE, ERROR_MSG, e.getMessage());
             e.printStackTrace();
