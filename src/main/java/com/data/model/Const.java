@@ -95,6 +95,17 @@ public final class Const {
     public static final String DATE_FORMAT_PATTERN = "yyyy-dd-MM hh:mm";
 
 
+    /**
+     * Стиль атрибут
+     */
+    public static final String ERROR_MSG = "Error message:";
+
+    /**
+     * Стиль атрибут
+     */
+    public static final String REPORT_FILE_PATH = "report/report.html";
+
+
     private Const() {
     }
 }

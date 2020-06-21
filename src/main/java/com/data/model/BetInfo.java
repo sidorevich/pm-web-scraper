@@ -1,12 +1,12 @@
 package com.data.model;
 
-import java.util.List;
+import java.util.Map;
 
 public class BetInfo {
     private Long date;
     private String homeTeam;
     private String visitTeam;
-    private List<CoeffInfo> coefficients;
+    private Map<String, CoeffInfo> coefficients;
 
     public Long getDate() {
         return date;
@@ -32,11 +32,11 @@ public class BetInfo {
         this.visitTeam = visitTeam;
     }
 
-    public List<CoeffInfo> getCoefficients() {
+    public Map<String, CoeffInfo> getCoefficients() {
         return coefficients;
     }
 
-    public void setCoefficients(List<CoeffInfo> coefficients) {
+    public void setCoefficients(Map<String, CoeffInfo> coefficients) {
         this.coefficients = coefficients;
     }
 }

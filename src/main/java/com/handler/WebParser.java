@@ -6,7 +6,7 @@ import com.data.model.SportLobby;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Node;
 
 import java.io.IOException;
@@ -19,32 +19,29 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.data.model.Const.*;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class WebParser {
 
     private static final Logger logger = Logger.getLogger(WebParser.class.getName());
-    //TODO
+
     WebClient client = new WebClient(BrowserVersion.BEST_SUPPORTED);
 
-    //TODO
-    private List<SportLobby> getListOfSportLobby(String menuXPath, String searchUrl) {
-        //TODO
-        client.getOptions().setCssEnabled(false);
-        client.getOptions().setJavaScriptEnabled(false);
+    private List<SportLobby> getListOfSportLobby() {
 
         try {
-            HtmlPage page = client.getPage(searchUrl);
+            HtmlPage page = client.getPage(SEARCH_URL);
 
-            List<HtmlAnchor> sportLobbyMenuLinks = page.getByXPath(menuXPath);
-            //TODO
+            List<HtmlAnchor> sportLobbyMenuLinks = page.getByXPath(XPATH_NAVIGATIONAL_MENU);
+
             if (sportLobbyMenuLinks == null || sportLobbyMenuLinks.isEmpty()) {
                 return null;
             }
 
             return sportLobbyMenuLinks.stream().map(this::fillSportLobbyObject).filter(Objects::nonNull).collect(Collectors.toList());
-            //TODO
-        } catch (IOException | NullPointerException e) {
-            logger.log(Level.WARNING, e.getMessage());
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, ERROR_MSG, e.getMessage());
             e.printStackTrace();
         }
 
@@ -59,27 +56,29 @@ public class WebParser {
 
         SportLobby sportLobby = new SportLobby();
 
-        if (StringUtils.isNotEmpty(htmlAnchor.getHrefAttribute())) {
-            sportLobby.setLink(htmlAnchor.getHrefAttribute());
+        if (isNotEmpty(htmlAnchor.getHrefAttribute())) {
+            sportLobby.setLink(SEARCH_URL + htmlAnchor.getHrefAttribute());
         }
 
-        if (StringUtils.isNotEmpty(htmlAnchor.asText())) {
+        if (isNotEmpty(htmlAnchor.asText())) {
             sportLobby.setName(htmlAnchor.asText());
         }
 
-        //TODO
         Node hdAttribute = htmlAnchor.getAttributes().getNamedItem(HD_ATTRIBUTE);
-        if (hdAttribute != null && StringUtils.isNotEmpty(hdAttribute.getNodeValue())) {
+        if (hdAttribute != null && isNotEmpty(hdAttribute.getNodeValue())) {
             sportLobby.setTableId(hdAttribute.getNodeValue());
+        } else {
+            logger.warning(String.format("Can not find table ID for :%s!", isNotEmpty(htmlAnchor.getHrefAttribute()) ? htmlAnchor.getHrefAttribute() : ""));
+            return null;
         }
 
-        //TODO
+        //Получение наименование вида спорта
         DomNode parentNode = htmlAnchor.getParentNode();
         if (parentNode != null
                 && parentNode.getParentNode() != null
                 && parentNode.getParentNode().getParentNode() != null
                 && parentNode.getParentNode().getParentNode().getFirstChild() != null
-                && StringUtils.isNotEmpty(parentNode.getParentNode().getParentNode().getFirstChild().asText())) {
+                && isNotEmpty(parentNode.getParentNode().getParentNode().getFirstChild().asText())) {
             sportLobby.setSportName(parentNode.getParentNode().getParentNode().getFirstChild().asText());
         }
 
@@ -87,46 +86,42 @@ public class WebParser {
 
     }
 
-    public void likeAMain() {
-        List<SportLobby> leftMenuObjects = getListOfSportLobby(XPATH_NAVIGATIONAL_MENU, SEARCH_URL);
+    public void scrapWebSite() {
+        logger.info("Starting scraping web site");
+        long t = System.currentTimeMillis();
 
-        if (leftMenuObjects == null || leftMenuObjects.isEmpty()) {
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(false);
+
+        List<SportLobby> sportLobbies = getListOfSportLobby();
+
+        if (sportLobbies == null || sportLobbies.isEmpty()) {
             return;
         }
 
-        List<SportLobby> allTableFiledsList = new ArrayList<>();
+        List<SportLobby> betInfoData = new ArrayList<>();
 
-        long t = System.currentTimeMillis();
-//        allTableFiledsList = leftMenuObjects
-//                .parallelStream()
-//                .unordered()
-//                .map(leftMenuObject
-//                        -> some("https://pm.by" + leftMenuObject.getHref(), leftMenuObject.getTableId()))
-//                .flatMap(Collection::parallelStream)
-//                .collect(Collectors.toList());
-//        for (LeftMenuObject leftMenuObject : leftMenuObjects) {
-//            allTableFiledsList.addAll(some("https://pm.by" + leftMenuObject.getHref(), leftMenuObject.getTableId()));
-//        }
-
-
-        allTableFiledsList = leftMenuObjects
+        betInfoData = sportLobbies
                 .parallelStream()
                 .unordered()
                 .map(this::some)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
+        if (betInfoData.isEmpty()) {
+            logger.info(String.format("Can not get bets information for %s lobbies", sportLobbies.size()));
+            return;
+        }
 
-        System.out.println("Total: " + (System.currentTimeMillis() - t) / 1000);
-        allTableFiledsList.size();
-
+        HtmlGenerator.writeToFileReceivedData(betInfoData);
+        logger.info(String.format("Completed total scraping for:%s seconds", ((System.currentTimeMillis() - t) / 1000)));
         client.close();
     }
 
     private List<HtmlTableBody> getBetInfoTableBodies(HtmlPage contentPage, String tableId) {
         List<DomElement> contentTables = contentPage.getElementsByTagName(TABLE_TAG_VALUE);
 
-        DomElement tableDomeElement = contentTables.stream().filter(Objects::nonNull).filter(domElement -> StringUtils.isNotEmpty(domElement.getAttribute(ID_ATTRIBUTE))
+        DomElement tableDomeElement = contentTables.stream().filter(Objects::nonNull).filter(domElement -> isNotEmpty(domElement.getAttribute(ID_ATTRIBUTE))
                 && domElement.getAttribute(ID_ATTRIBUTE).contains(tableId))
                 .findFirst().orElse(null);
 
@@ -137,7 +132,13 @@ public class WebParser {
 
             List<HtmlTableBody> collectHtmlTableBodies = new ArrayList<>();
 
-            for (HtmlTableCell tableCell : htmlTableContent.getRows().get(0).getCells()) {
+            List<HtmlTableCell> tableCells = htmlTableContent.getRows().stream()
+                    .filter(htmlTableRow -> htmlTableRow.getCells() != null && !htmlTableRow.getCells().isEmpty())
+                    .map(HtmlTableRow::getCells)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+
+            for (HtmlTableCell tableCell : tableCells) {
                 collectHtmlTableBodies.addAll(tableCell.getChildNodes().stream()
                         .filter(domNode -> domNode instanceof HtmlTable)
                         .map(domNode -> ((HtmlTable) domNode).getBodies()).filter(Objects::nonNull)
@@ -155,7 +156,6 @@ public class WebParser {
 
     private boolean isNotNecessaryBodies(HtmlTableBody htmlTable) {
         return !htmlTable.getAttribute(STYLE_ATTRIBUTE).contains(NON_DISPLAY_ATTRIBUTE)
-                //   &&! item.getAttributes().getNamedItem("style").getNodeValue()
                 && (htmlTable.getAttributes() != null && htmlTable.getAttributes().getNamedItem(ID_ATTRIBUTE) == null)
                 && !htmlTable.getAttribute(CLASS_ATTRIBUTE).contains(SPACE_ATTRIBUTE);
     }
@@ -195,27 +195,30 @@ public class WebParser {
 
         HtmlPage contentPage = null;
 
-        //TODO пересмотреть
-        String contentUrl = SEARCH_URL + HD_CONTENT_URL + sportLobby.getTableId() + HS_PARAM_URL;
+        StringBuilder sb = new StringBuilder(SEARCH_URL);
+        sb.append(HD_CONTENT_URL);
+        sb.append(sportLobby.getTableId());
+        sb.append(HS_PARAM_URL);
 
         try {
-            contentPage = client.getPage(contentUrl);
+            contentPage = client.getPage(sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
             logger.log(Level.WARNING, e.getMessage());
         }
 
         if (contentPage == null) {
+            logger.info(String.format("Can not get cont of page ID for :%s!", sb.toString()));
             return null;
         }
 
         List<HtmlTableBody> betInfoTableBodies = getBetInfoTableBodies(contentPage, sportLobby.getTableId());
 
-        //TODO может и лишнее
         List<HtmlTableBody> headTableBodies = betInfoTableBodies.stream()
                 .filter(tableBody -> isContainsCellValue(tableBody, P1_TITLE) || isContainsCellValue(tableBody, P2_TITLE)).collect(Collectors.toList());
 
         if (headTableBodies.isEmpty()) {
+            logger.info(String.format("Can not find table with coefficient cells :for link %s ,Event name:%s", sb.toString(), sportLobby.getName()));
             return null;
         }
 
@@ -235,12 +238,9 @@ public class WebParser {
         List<BetInfo> infoList = new ArrayList<>();
 
         try {
-
-
             for (HtmlTableBody betInfoBody : betInfoTableBodies) {
 
                 List<HtmlTableCell> betInfoCells = getCellsFromBody(betInfoBody);
-
 
                 List<String> betInfoValues;
 
@@ -251,19 +251,30 @@ public class WebParser {
                 }
 
                 if (betInfoValues.isEmpty()) {
+                    logger.info(String.format("Can not find table cells values for:%s", sb.toString()));
                     continue;
                 }
 
                 BetInfo betInfo = fillBetInfo(indexMap, betInfoValues);
 
+                if (betInfo == null) {
+                    logger.info(String.format("Can not find coefficients values for:%s", sb.toString()));
+                    continue;
+                }
+
                 infoList.add(betInfo);
             }
+        } catch (ParseException e) {
+            logger.log(Level.SEVERE, String.format("Can not parse date for:%s details:%s", sb.toString(), e.getMessage()));
+            e.getMessage();
         } catch (Exception e) {
+            logger.log(Level.SEVERE, ERROR_MSG, e.getMessage());
             e.getMessage();
         }
-        System.out.println("Complete: " + (System.currentTimeMillis() - t) / 1000);
 
         sportLobby.setBetInfoList(infoList);
+
+        logger.info(String.format("Completed page scraping for:%s : %s seconds", sb.toString(), ((System.currentTimeMillis() - t) / 1000)));
 
         return sportLobby;
 
@@ -271,38 +282,60 @@ public class WebParser {
 
     private BetInfo fillBetInfo(Map<String, Integer> indexMap, List<String> cellsData) throws ParseException {
         BetInfo betInfo = new BetInfo();
-        List<CoeffInfo> coeffInfos = new ArrayList<>();
+        Map<String, CoeffInfo> coefficientsInfo = new HashMap<>();
         if (indexMap.get(DATE_TITLE) != null) {
-            betInfo.setDate((new SimpleDateFormat(DATE_FORMAT_PATTERN).parse(LocalDate.now().getYear() + "-" + cellsData.get(indexMap.get(DATE_TITLE)).replace("/", "-").replace("\r", "").replace("\n", " ")).getTime()));
+            String dateValue = cellsData.get(indexMap.get(DATE_TITLE));
+            if (isNotEmpty(dateValue)) {
+                String dateWithYearValue = LocalDate.now().getYear() + "-" + cellsData.get(indexMap.get(DATE_TITLE))
+                        .replace("/", "-")
+                        .replace("\r\n", " ");
+                betInfo.setDate(new SimpleDateFormat(DATE_FORMAT_PATTERN).parse(dateWithYearValue).getTime());
+            }
         }
 
         if (indexMap.get(EVENT_TITLE) != null) {
-            betInfo.setHomeTeam(cellsData.get(indexMap.get(EVENT_TITLE)).split("\r\n")[0]);
-            betInfo.setVisitTeam(cellsData.get(indexMap.get(EVENT_TITLE)).split("\r\n")[1]);
+            String teamsValue = cellsData.get(indexMap.get(EVENT_TITLE));
+            if (isNotEmpty(teamsValue) && teamsValue.contains("\r\n")) {
+                String[] teamsArray = teamsValue.split("\r\n");
+                if (teamsArray.length == 2) {
+                    betInfo.setHomeTeam(teamsArray[0]);
+                    betInfo.setVisitTeam(teamsArray[1]);
+                }
+            }
+
         }
         if (indexMap.get(P1_TITLE) != null) {
             CoeffInfo coeffInfo = new CoeffInfo(P1_TITLE);
-            if (!cellsData.get(indexMap.get(P1_TITLE)).isEmpty()) {
-                coeffInfo.setValue(Double.valueOf(cellsData.get(indexMap.get(P1_TITLE))));
+            String winnerHomeTeamVal = cellsData.get(indexMap.get(P1_TITLE));
+            if (isNotEmpty(winnerHomeTeamVal) && StringUtils.isNotBlank(winnerHomeTeamVal)) {
+                coeffInfo.setValue(Double.valueOf(winnerHomeTeamVal));
             }
-            coeffInfos.add(coeffInfo);
+            coefficientsInfo.put(P1_TITLE, coeffInfo);
         }
         if (indexMap.get(X_TITLE) != null) {
             CoeffInfo coeffInfo = new CoeffInfo(X_TITLE);
-            if (!cellsData.get(indexMap.get(X_TITLE)).isEmpty()) {
-                coeffInfo.setValue(Double.valueOf(cellsData.get(indexMap.get(X_TITLE))));
+            String drawValue = cellsData.get(indexMap.get(X_TITLE));
+            if (isNotEmpty(drawValue) && StringUtils.isNotBlank(drawValue)) {
+                coeffInfo.setValue(Double.valueOf(drawValue));
             }
-            coeffInfos.add(coeffInfo);
+            coefficientsInfo.put(X_TITLE, coeffInfo);
         }
         if (indexMap.get(P2_TITLE) != null) {
             CoeffInfo coeffInfo = new CoeffInfo(P2_TITLE);
-            if (!cellsData.get(indexMap.get(P2_TITLE)).isEmpty()) {
-                coeffInfo.setValue(Double.valueOf(cellsData.get(indexMap.get(P2_TITLE))));
+            String winnerVisitTeamVal = cellsData.get(indexMap.get(P2_TITLE));
+            if (isNotEmpty(winnerVisitTeamVal) && StringUtils.isNotBlank(winnerVisitTeamVal)) {
+                coeffInfo.setValue(Double.valueOf(winnerVisitTeamVal));
             }
-            coeffInfos.add(coeffInfo);
+            coefficientsInfo.put(P2_TITLE, coeffInfo);
         }
 
-        betInfo.setCoefficients(coeffInfos);
+        boolean isExistCoeffVal = coefficientsInfo.values().stream().anyMatch(item -> item != null && item.getValue() != null);
+
+        if (!isExistCoeffVal) {
+            return null;
+        }
+
+        betInfo.setCoefficients(coefficientsInfo);
 
         return betInfo;
     }
