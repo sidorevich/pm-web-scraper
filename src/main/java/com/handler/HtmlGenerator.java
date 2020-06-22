@@ -32,91 +32,152 @@ public class HtmlGenerator {
     private static String getHtmContent(List<SportLobby> sportLobbies) {
         try {
             Html htmlPage = new Html(null) {
-                Body body = new Body(this) {
-                    Table table = new Table(this, new CustomAttribute(BORDER_ATTRIBUTE, "1px")) {
-                        {
-                            Th kindSportTh = new Th(this) {
-                                Blank cellContent = new Blank(this, KIND_SPORT_TITLE);
-                            };
-                            Th eventTh = new Th(this) {
-                                Blank cellContent = new Blank(this, EVENT_TABLE_TITLE);
-                            };
-                            Th homeTeamTh = new Th(this) {
-                                Blank cellContent = new Blank(this, HOME_TEAM_TABLE_TITLE);
-                            };
-                            Th visitTeamTh = new Th(this) {
-                                Blank cellContent = new Blank(this, VISIT_TEAM_TABLE_TITLE);
-                            };
-                            Th eventDateTh = new Th(this) {
-                                Blank cellContent = new Blank(this, DATE_START_TABLE_TITLE);
-                            };
-                            Th homeTeamWinCoeffTh = new Th(this) {
-                                Blank cellContent = new Blank(this, P1_TITLE);
-                            };
-                            Th drawCoeffTh = new Th(this) {
-                                Blank cellContent = new Blank(this, X_TITLE);
-                            };
-                            Th visitTeamCoeffTh = new Th(this) {
-                                Blank cellContent = new Blank(this, P2_TITLE);
-                            };
-                            Th linkTh = new Th(this) {
-                                Blank cellContent = new Blank(this, LINK_TABLE_TITLE);
-                            };
-                            for (final SportLobby sportLobby : sportLobbies) {
-                                for (BetInfo betInfo : sportLobby.getBetInfoList()) {
-                                    Tr tr = new Tr(this) {
-                                        Td kindSportTd = new Td(this) {
-                                            String sportName = sportLobby.getSportName() != null ? sportLobby.getSportName() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, sportName);
-                                        };
-                                        Td eventTd = new Td(this) {
-                                            String eventName = sportLobby.getName() != null ? sportLobby.getName() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, eventName);
-                                        };
-                                        Td homeTeamTd = new Td(this) {
-                                            String homeTeam = betInfo.getHomeTeam() != null ? betInfo.getHomeTeam() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, homeTeam);
-                                        };
-                                        Td visitTeamTd = new Td(this) {
-                                            String visitTeam = betInfo.getVisitTeam() != null ? betInfo.getVisitTeam() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, visitTeam);
-                                        };
-                                        Td eventDateTd = new Td(this) {
-                                            String dateLong = betInfo.getDate() != null ? betInfo.getDate().toString() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, dateLong);
-
-                                        };
-                                        Td homeTeamWinCoeffTd = new Td(this) {
-                                            CoeffInfo winnerCoeffVal = betInfo.getCoefficients().get(P1_TITLE);
-                                            String winnerCoeff = (winnerCoeffVal != null && winnerCoeffVal.getValue() != null) ? winnerCoeffVal.getValue().toString() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, winnerCoeff);
-
-
-                                        };
-                                        Td drawCoeffTd = new Td(this) {
-                                            CoeffInfo drawCoeffVal = betInfo.getCoefficients().get(X_TITLE);
-                                            String drawCoeff = (drawCoeffVal != null && drawCoeffVal.getValue() != null) ? drawCoeffVal.getValue().toString() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, drawCoeff);
-
-                                        };
-                                        Td visitTeamCoeffTd = new Td(this) {
-                                            CoeffInfo visitWinVal = betInfo.getCoefficients().get(P2_TITLE);
-                                            String visitWin = (visitWinVal != null && visitWinVal.getValue() != null) ? visitWinVal.getValue().toString() : MISSING_VALUE;
-                                            Blank cellContent = new Blank(this, visitWin);
-
-                                        };
-                                        Td linkTd = new Td(this) {
-                                            String link = sportLobby.getLink() != null ? sportLobby.getLink() : MISSING_VALUE;
-                                            A a = new A(this, new CustomAttribute(HREF_ATTRIBUTE, link)) {
-                                                Blank cellContent = new Blank(this, link);
-                                            };
-                                        };
+                @Override
+                protected void init() {
+                    new Body(this) {
+                        @Override
+                        protected void init() {
+                            new Table(this, new CustomAttribute(BORDER_ATTRIBUTE, "1px")) {
+                                {
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, KIND_SPORT_TITLE);
+                                        }
                                     };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, EVENT_TABLE_TITLE);
+                                        }
+                                    };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, HOME_TEAM_TABLE_TITLE);
+                                        }
+                                    };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, VISIT_TEAM_TABLE_TITLE);
+                                        }
+                                    };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, DATE_START_TABLE_TITLE);
+                                        }
+                                    };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, P1_TITLE);
+                                        }
+                                    };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, X_TITLE);
+                                        }
+                                    };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, P2_TITLE);
+                                        }
+                                    };
+                                    new Th(this) {
+                                        @Override
+                                        protected void init() {
+                                            new Blank(this, LINK_TABLE_TITLE);
+                                        }
+                                    };
+                                    for (final SportLobby sportLobby : sportLobbies) {
+                                        for (BetInfo betInfo : sportLobby.getBetInfoList()) {
+                                            new Tr(this) {
+                                                @Override
+                                                protected void init() {
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            String sportName = sportLobby.getSportName() != null ? sportLobby.getSportName() : MISSING_VALUE;
+                                                            new Blank(this, sportName);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            String eventName = sportLobby.getName() != null ? sportLobby.getName() : MISSING_VALUE;
+                                                            new Blank(this, eventName);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            String homeTeam = betInfo.getHomeTeam() != null ? betInfo.getHomeTeam() : MISSING_VALUE;
+                                                            new Blank(this, homeTeam);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            String visitTeam = betInfo.getVisitTeam() != null ? betInfo.getVisitTeam() : MISSING_VALUE;
+                                                            new Blank(this, visitTeam);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            String dateLong = betInfo.getDate() != null ? betInfo.getDate().toString() : MISSING_VALUE;
+                                                            new Blank(this, dateLong);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            CoeffInfo winnerCoeffVal = betInfo.getCoefficients().get(P1_TITLE);
+                                                            String winnerCoeff = (winnerCoeffVal != null && winnerCoeffVal.getValue() != null) ? winnerCoeffVal.getValue().toString() : MISSING_VALUE;
+                                                            new Blank(this, winnerCoeff);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            CoeffInfo drawCoeffVal = betInfo.getCoefficients().get(X_TITLE);
+                                                            String drawCoeff = (drawCoeffVal != null && drawCoeffVal.getValue() != null) ? drawCoeffVal.getValue().toString() : MISSING_VALUE;
+                                                            new Blank(this, drawCoeff);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            CoeffInfo visitWinVal = betInfo.getCoefficients().get(P2_TITLE);
+                                                            String visitWin = (visitWinVal != null && visitWinVal.getValue() != null) ? visitWinVal.getValue().toString() : MISSING_VALUE;
+                                                            new Blank(this, visitWin);
+                                                        }
+                                                    };
+                                                    new Td(this) {
+                                                        @Override
+                                                        protected void init() {
+                                                            String link = sportLobby.getLink() != null ? sportLobby.getLink() : MISSING_VALUE;
+                                                            new A(this, new CustomAttribute(HREF_ATTRIBUTE, link)) {
+                                                                @Override
+                                                                protected void init() {
+                                                                    new Blank(this, link);
+                                                                }
+                                                            };
+                                                        }
+                                                    };
+                                                }
+                                            };
+                                        }
+                                    }
                                 }
-                            }
+                            };
                         }
                     };
-                };
+                }
             };
 
             htmlPage.setPrependDocType(true);
@@ -137,7 +198,7 @@ public class HtmlGenerator {
         try {
             FileUtils.write(new File(REPORT_FILE_PATH), data, "UTF-8");
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error message: ", e.getMessage());
+            logger.log(Level.SEVERE, ERROR_MSG, e.getMessage());
             e.printStackTrace();
         }
     }

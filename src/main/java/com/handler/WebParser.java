@@ -23,8 +23,7 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class WebParser {
 
     private static final Logger logger = Logger.getLogger(WebParser.class.getName());
-
-    WebClient client = new WebClient(BrowserVersion.BEST_SUPPORTED);
+    private final WebClient client = new WebClient(BrowserVersion.BEST_SUPPORTED);
 
     private List<SportLobby> getListOfSportLobby() {
 
@@ -98,7 +97,7 @@ public class WebParser {
             return;
         }
 
-        List<SportLobby> betInfoData = new ArrayList<>();
+        List<SportLobby> betInfoData;
 
         betInfoData = sportLobbies
                 .parallelStream()
