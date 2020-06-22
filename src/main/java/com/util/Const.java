@@ -1,4 +1,4 @@
-package com.data.model;
+package com.util;
 
 public final class Const {
 
@@ -149,6 +149,11 @@ public final class Const {
      * Значение отсутвует
      */
     public static final String MISSING_VALUE = "-";
+
+    /**
+     * Tag span
+     */
+    public static final String SPAN_TAG = "span";
 
 
     private Const() {

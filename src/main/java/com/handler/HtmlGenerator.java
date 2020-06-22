@@ -11,7 +11,7 @@ import com.webfirmframework.wffweb.tag.html.tables.Table;
 import com.webfirmframework.wffweb.tag.html.tables.Td;
 import com.webfirmframework.wffweb.tag.html.tables.Th;
 import com.webfirmframework.wffweb.tag.html.tables.Tr;
-import com.webfirmframework.wffweb.tag.htmlwff.Blank;
+import com.webfirmframework.wffweb.tag.htmlwff.NoTag;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.data.model.Const.*;
+import static com.util.Const.*;
 
 public class HtmlGenerator {
     private static final Logger logger = Logger.getLogger(HtmlGenerator.class.getName());
@@ -53,55 +53,55 @@ public class HtmlGenerator {
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, KIND_SPORT_TITLE);
+                                            new NoTag(this, KIND_SPORT_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, EVENT_TABLE_TITLE);
+                                            new NoTag(this, EVENT_TABLE_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, HOME_TEAM_TABLE_TITLE);
+                                            new NoTag(this, HOME_TEAM_TABLE_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, VISIT_TEAM_TABLE_TITLE);
+                                            new NoTag(this, VISIT_TEAM_TABLE_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, DATE_START_TABLE_TITLE);
+                                            new NoTag(this, DATE_START_TABLE_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, P1_TITLE);
+                                            new NoTag(this, P1_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, X_TITLE);
+                                            new NoTag(this, X_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, P2_TITLE);
+                                            new NoTag(this, P2_TITLE);
                                         }
                                     };
                                     new Th(this) {
                                         @Override
                                         protected void init() {
-                                            new Blank(this, LINK_TABLE_TITLE);
+                                            new NoTag(this, LINK_TABLE_TITLE);
                                         }
                                     };
                                     for (final SportLobby sportLobby : sportLobbies) {
@@ -113,35 +113,35 @@ public class HtmlGenerator {
                                                         @Override
                                                         protected void init() {
                                                             String sportName = sportLobby.getSportName() != null ? sportLobby.getSportName() : MISSING_VALUE;
-                                                            new Blank(this, sportName);
+                                                            new NoTag(this, sportName);
                                                         }
                                                     };
                                                     new Td(this) {
                                                         @Override
                                                         protected void init() {
                                                             String eventName = sportLobby.getName() != null ? sportLobby.getName() : MISSING_VALUE;
-                                                            new Blank(this, eventName);
+                                                            new NoTag(this, eventName);
                                                         }
                                                     };
                                                     new Td(this) {
                                                         @Override
                                                         protected void init() {
                                                             String homeTeam = betInfo.getHomeTeam() != null ? betInfo.getHomeTeam() : MISSING_VALUE;
-                                                            new Blank(this, homeTeam);
+                                                            new NoTag(this, homeTeam);
                                                         }
                                                     };
                                                     new Td(this) {
                                                         @Override
                                                         protected void init() {
                                                             String visitTeam = betInfo.getVisitTeam() != null ? betInfo.getVisitTeam() : MISSING_VALUE;
-                                                            new Blank(this, visitTeam);
+                                                            new NoTag(this, visitTeam);
                                                         }
                                                     };
                                                     new Td(this) {
                                                         @Override
                                                         protected void init() {
                                                             String dateLong = betInfo.getDate() != null ? betInfo.getDate().toString() : MISSING_VALUE;
-                                                            new Blank(this, dateLong);
+                                                            new NoTag(this, dateLong);
                                                         }
                                                     };
                                                     new Td(this) {
@@ -149,7 +149,7 @@ public class HtmlGenerator {
                                                         protected void init() {
                                                             CoeffInfo winnerCoeffVal = betInfo.getCoefficients().get(P1_TITLE);
                                                             String winnerCoeff = (winnerCoeffVal != null && winnerCoeffVal.getValue() != null) ? winnerCoeffVal.getValue().toString() : MISSING_VALUE;
-                                                            new Blank(this, winnerCoeff);
+                                                            new NoTag(this, winnerCoeff);
                                                         }
                                                     };
                                                     new Td(this) {
@@ -157,7 +157,7 @@ public class HtmlGenerator {
                                                         protected void init() {
                                                             CoeffInfo drawCoeffVal = betInfo.getCoefficients().get(X_TITLE);
                                                             String drawCoeff = (drawCoeffVal != null && drawCoeffVal.getValue() != null) ? drawCoeffVal.getValue().toString() : MISSING_VALUE;
-                                                            new Blank(this, drawCoeff);
+                                                            new NoTag(this, drawCoeff);
                                                         }
                                                     };
                                                     new Td(this) {
@@ -165,7 +165,7 @@ public class HtmlGenerator {
                                                         protected void init() {
                                                             CoeffInfo visitWinVal = betInfo.getCoefficients().get(P2_TITLE);
                                                             String visitWin = (visitWinVal != null && visitWinVal.getValue() != null) ? visitWinVal.getValue().toString() : MISSING_VALUE;
-                                                            new Blank(this, visitWin);
+                                                            new NoTag(this, visitWin);
                                                         }
                                                     };
                                                     new Td(this) {
@@ -175,7 +175,7 @@ public class HtmlGenerator {
                                                             new A(this, new CustomAttribute(HREF_ATTRIBUTE, link)) {
                                                                 @Override
                                                                 protected void init() {
-                                                                    new Blank(this, link);
+                                                                    new NoTag(this, link);
                                                                 }
                                                             };
                                                         }

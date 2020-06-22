@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>org.parser</groupId>
     <artifactId>Parser</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
@@ -36,7 +36,17 @@
         <dependency>
             <groupId>com.webfirmframework</groupId>
             <artifactId>wffweb</artifactId>
-            <version>1.0.0</version>
+            <version>3.0.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
     </dependencies>
 

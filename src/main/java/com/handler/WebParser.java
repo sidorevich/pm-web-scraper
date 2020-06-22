@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static com.data.model.Const.*;
+import static com.util.Const.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
 
@@ -50,7 +50,6 @@ public class WebParser {
                 .map(this::scrapWebPage)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-
         if (betInfoData.isEmpty()) {
             logger.info(String.format("Can not get bets information for %s lobbies", sportLobbies.size()));
             return;
@@ -199,6 +198,16 @@ public class WebParser {
 
                 List<String> betInfoValues;
 
+                //Если есть сноски в ячейке наименования команд, затираем
+                if (betInfoCells.size() >= indexMap.get(EVENT_TITLE)) {
+                    List<HtmlElement> spanList = betInfoCells.get(indexMap.get(EVENT_TITLE)).getElementsByTagName(SPAN_TAG);
+                    for (HtmlElement item : spanList) {
+                        if (isNotEmpty(item.asText()) && !item.asText().contains("\r\n")) {
+                            item.setTextContent(EMPTY);
+                        }
+                    }
+                }
+
                 if (betInfoCells.size() != headerCells.size()) {
                     betInfoValues = getDividedColSpanValues(betInfoCells);
                 } else {
@@ -338,7 +347,7 @@ public class WebParser {
         for (HtmlTableCell item : tableCells) {
             if (item.getColumnSpan() > 1) {
                 for (int i = 0; i < item.getColumnSpan(); i++) {
-                    values.add("");
+                    values.add(EMPTY);
                 }
             } else {
                 values.add(item.asText());
