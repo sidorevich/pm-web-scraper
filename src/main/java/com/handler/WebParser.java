@@ -24,7 +24,6 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class WebParser {
 
     private static final Logger logger = Logger.getLogger(WebParser.class.getName());
-    private final WebClient client = new WebClient(BrowserVersion.BEST_SUPPORTED);
 
     /**
      * Запуск процесса парсинга сайта
@@ -32,9 +31,6 @@ public class WebParser {
     public void runWebSiteParsing() {
         logger.info("Starting scraping web site");
         long t = System.currentTimeMillis();
-
-        client.getOptions().setCssEnabled(false);
-        client.getOptions().setJavaScriptEnabled(false);
 
         List<SportLobby> sportLobbies = getListOfSportLobby();
 
@@ -57,7 +53,6 @@ public class WebParser {
 
         HtmlGenerator.writeToFileReceivedData(betInfoData);
         logger.info(String.format("Completed total scraping for:%s seconds", ((System.currentTimeMillis() - t) / 1000)));
-        client.close();
     }
 
     /**
@@ -66,9 +61,12 @@ public class WebParser {
      * @return спсиок всех состязаний
      */
     private List<SportLobby> getListOfSportLobby() {
+        final WebClient client = getWebClient();
 
         try {
+
             HtmlPage page = client.getPage(SEARCH_URL);
+            client.close();
 
             List<HtmlAnchor> sportLobbyMenuLinks = page.getByXPath(XPATH_NAVIGATIONAL_MENU);
 
@@ -138,6 +136,8 @@ public class WebParser {
      */
     private SportLobby scrapWebPage(SportLobby sportLobby) {
 
+        final WebClient client = getWebClient();
+
         if (sportLobby == null || isEmpty(sportLobby.getTableId()) || isBlank(sportLobby.getTableId())) {
             logger.info("Can not get page, sportLobby or table empty");
             return null;
@@ -155,6 +155,7 @@ public class WebParser {
 
         try {
             contentPage = client.getPage(sb.toString());
+            client.close();
         } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.SEVERE, String.format("Can not get page : %s cause: %s", sb.toString(), e.getMessage()));
@@ -435,4 +436,15 @@ public class WebParser {
 
     }
 
+    /**
+     * Получить сконфигурированный веб клиент
+     */
+    private WebClient getWebClient() {
+        WebClient webClient = new WebClient(BrowserVersion.BEST_SUPPORTED);
+
+        webClient.getOptions().setCssEnabled(false);
+        webClient.getOptions().setJavaScriptEnabled(false);
+
+        return webClient;
+    }
 }
