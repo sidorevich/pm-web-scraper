@@ -20,11 +20,52 @@ import java.util.stream.Collectors;
 import static com.data.model.Const.*;
 import static org.apache.commons.lang3.StringUtils.*;
 
+
 public class WebParser {
 
     private static final Logger logger = Logger.getLogger(WebParser.class.getName());
     private final WebClient client = new WebClient(BrowserVersion.BEST_SUPPORTED);
 
+    /**
+     * Запуск процесса парсинга сайта
+     */
+    public void runWebSiteParsing() {
+        logger.info("Starting scraping web site");
+        long t = System.currentTimeMillis();
+
+        client.getOptions().setCssEnabled(false);
+        client.getOptions().setJavaScriptEnabled(false);
+
+        List<SportLobby> sportLobbies = getListOfSportLobby();
+
+        if (sportLobbies == null || sportLobbies.isEmpty()) {
+            return;
+        }
+
+        List<SportLobby> betInfoData;
+
+        betInfoData = sportLobbies
+                .parallelStream()
+                .unordered()
+                .map(this::scrapWebPage)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        if (betInfoData.isEmpty()) {
+            logger.info(String.format("Can not get bets information for %s lobbies", sportLobbies.size()));
+            return;
+        }
+
+        HtmlGenerator.writeToFileReceivedData(betInfoData);
+        logger.info(String.format("Completed total scraping for:%s seconds", ((System.currentTimeMillis() - t) / 1000)));
+        client.close();
+    }
+
+    /**
+     * Получения списка всех состязаний где можно ставить ставки
+     *
+     * @return спсиок всех состязаний
+     */
     private List<SportLobby> getListOfSportLobby() {
 
         try {
@@ -46,6 +87,12 @@ public class WebParser {
         return Collections.emptyList();
     }
 
+    /**
+     * Заполнение сущности {@link SportLobby}
+     *
+     * @param htmlAnchor html элемент ссылка
+     * @return заполненные данные
+     */
     private SportLobby fillSportLobbyObject(HtmlAnchor htmlAnchor) {
 
         if (htmlAnchor == null) {
@@ -84,110 +131,12 @@ public class WebParser {
 
     }
 
-    public void runWebSiteParsing() {
-        logger.info("Starting scraping web site");
-        long t = System.currentTimeMillis();
-
-        client.getOptions().setCssEnabled(false);
-        client.getOptions().setJavaScriptEnabled(false);
-
-        List<SportLobby> sportLobbies = getListOfSportLobby();
-
-        if (sportLobbies == null || sportLobbies.isEmpty()) {
-            return;
-        }
-
-        List<SportLobby> betInfoData;
-
-        betInfoData = sportLobbies
-                .parallelStream()
-                .unordered()
-                .map(this::scrapWebPage)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        if (betInfoData.isEmpty()) {
-            logger.info(String.format("Can not get bets information for %s lobbies", sportLobbies.size()));
-            return;
-        }
-
-        HtmlGenerator.writeToFileReceivedData(betInfoData);
-        logger.info(String.format("Completed total scraping for:%s seconds", ((System.currentTimeMillis() - t) / 1000)));
-        client.close();
-    }
-
-    private List<HtmlTableBody> getBetInfoTableBodies(HtmlPage contentPage, String tableId) {
-        List<DomElement> contentTables = contentPage.getElementsByTagName(TABLE_TAG_VALUE);
-
-        DomElement tableDomeElement = contentTables.stream().filter(Objects::nonNull).filter(domElement -> isNotEmpty(domElement.getAttribute(ID_ATTRIBUTE))
-                && domElement.getAttribute(ID_ATTRIBUTE).contains(tableId))
-                .findFirst().orElse(null);
-
-        HtmlTable htmlTableContent = tableDomeElement instanceof HtmlTable ? (HtmlTable) tableDomeElement : null;
-
-
-        if (htmlTableContent != null && htmlTableContent.getBodies() != null && htmlTableContent.getBodies().size() == 1) {
-
-            List<HtmlTableBody> collectHtmlTableBodies = new ArrayList<>();
-
-            List<HtmlTableCell> tableCells = htmlTableContent.getRows().stream()
-                    .filter(htmlTableRow -> htmlTableRow.getCells() != null && !htmlTableRow.getCells().isEmpty())
-                    .map(HtmlTableRow::getCells)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-
-            for (HtmlTableCell tableCell : tableCells) {
-                collectHtmlTableBodies.addAll(tableCell.getChildNodes().stream()
-                        .filter(domNode -> domNode instanceof HtmlTable)
-                        .map(domNode -> ((HtmlTable) domNode).getBodies()).filter(Objects::nonNull)
-                        .flatMap(Collection::stream)
-                        .filter(this::isNotNecessaryBodies).collect(Collectors.toList()));
-            }
-            return collectHtmlTableBodies;
-        } else {
-            if (htmlTableContent != null && htmlTableContent.getBodies() != null) {
-                return htmlTableContent.getBodies().stream().filter(this::isNotNecessaryBodies).collect(Collectors.toList());
-            }
-        }
-        return Collections.emptyList();
-    }
-
-    private boolean isNotNecessaryBodies(HtmlTableBody htmlTable) {
-        return (!htmlTable.getAttribute(STYLE_ATTRIBUTE).contains(NON_DISPLAY_ATTRIBUTE))
-                && (htmlTable.getAttributes() != null && htmlTable.getAttributes().getNamedItem(ID_ATTRIBUTE) == null)
-                && (!htmlTable.getAttribute(CLASS_ATTRIBUTE).contains(SPACE_ATTRIBUTE));
-    }
-
-    private boolean isContainsCellValue(HtmlTableBody tableBody, String value) {
-        return !tableBody.getRows().isEmpty()
-                && tableBody.getRows().stream().map(HtmlTableRow::getCells).flatMap(Collection::stream).anyMatch(htmlTableCell -> htmlTableCell.asText().contains(value));
-
-    }
-
-    private Integer getCellIndex(List<HtmlTableCell> tableCells, String... cellTitle) {
-
-        if (tableCells == null || tableCells.isEmpty()) {
-            return null;
-        }
-
-        for (int i = 0; i < tableCells.size(); i++) {
-            for (String item : cellTitle) {
-                if (StringUtils.equalsIgnoreCase(tableCells.get(i).asText(), item)) {
-                    return i;
-                }
-            }
-
-        }
-        return null;
-    }
-
-    private List<HtmlTableCell> getCellsFromBody(HtmlTableBody tableBody) {
-        return tableBody.getRows().stream()
-                .map(HtmlTableRow::getCells)
-                .flatMap(Collection::stream)
-                .filter(Objects::nonNull).collect(Collectors.toList());
-    }
-
+    /**
+     * Парсинг страницы по полученным данным
+     *
+     * @param sportLobby сущность стостязания {@link SportLobby}
+     * @return заполненные полученные данные
+     */
     private SportLobby scrapWebPage(SportLobby sportLobby) {
 
         if (sportLobby == null || isEmpty(sportLobby.getTableId()) || isBlank(sportLobby.getTableId())) {
@@ -199,6 +148,7 @@ public class WebParser {
 
         HtmlPage contentPage = null;
 
+        //Формируем адресс где находится таблица с данными
         StringBuilder sb = new StringBuilder(SEARCH_URL);
         sb.append(HD_CONTENT_URL);
         sb.append(sportLobby.getTableId());
@@ -208,7 +158,7 @@ public class WebParser {
             contentPage = client.getPage(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, String.format("Can not get page : %s cause: %s", sb.toString(), e.getMessage()));
         }
 
         if (contentPage == null) {
@@ -218,6 +168,7 @@ public class WebParser {
 
         List<HtmlTableBody> betInfoTableBodies = getBetInfoTableBodies(contentPage, sportLobby.getTableId());
 
+        //Филтруем таблицы у которых есть ставки вида П1 или П2
         List<HtmlTableBody> headTableBodies = betInfoTableBodies.stream()
                 .filter(tableBody -> isContainsCellValue(tableBody, P1_TITLE) || isContainsCellValue(tableBody, P2_TITLE)).collect(Collectors.toList());
 
@@ -284,6 +235,126 @@ public class WebParser {
 
     }
 
+
+    /**
+     * Получение таблицы и получение необходимых строк таблицы для парсинга
+     *
+     * @param contentPage полученная страница по адресу
+     * @param tableId     идентификатор таблицы со ставками
+     * @return отфильтрованный(только с необходимымы данными) спсиок табличных строк
+     */
+    private List<HtmlTableBody> getBetInfoTableBodies(HtmlPage contentPage, String tableId) {
+        List<DomElement> contentTables = contentPage.getElementsByTagName(TABLE_TAG_VALUE);
+
+        DomElement tableDomeElement = contentTables.stream().filter(Objects::nonNull).filter(domElement -> isNotEmpty(domElement.getAttribute(ID_ATTRIBUTE))
+                && domElement.getAttribute(ID_ATTRIBUTE).contains(tableId))
+                .findFirst().orElse(null);
+
+        HtmlTable htmlTableContent = tableDomeElement instanceof HtmlTable ? (HtmlTable) tableDomeElement : null;
+
+
+        if (htmlTableContent != null && htmlTableContent.getBodies() != null && htmlTableContent.getBodies().size() == 1) {
+
+            List<HtmlTableBody> collectHtmlTableBodies = new ArrayList<>();
+
+            List<HtmlTableCell> tableCells = htmlTableContent.getRows().stream()
+                    .filter(htmlTableRow -> htmlTableRow.getCells() != null && !htmlTableRow.getCells().isEmpty())
+                    .map(HtmlTableRow::getCells)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+
+            for (HtmlTableCell tableCell : tableCells) {
+                collectHtmlTableBodies.addAll(tableCell.getChildNodes().stream()
+                        .filter(domNode -> domNode instanceof HtmlTable)
+                        .map(domNode -> ((HtmlTable) domNode).getBodies()).filter(Objects::nonNull)
+                        .flatMap(Collection::stream)
+                        .filter(this::isNecessaryTableBody).collect(Collectors.toList()));
+            }
+            return collectHtmlTableBodies;
+        } else {
+            if (htmlTableContent != null && htmlTableContent.getBodies() != null) {
+                return htmlTableContent.getBodies().stream().filter(this::isNecessaryTableBody).collect(Collectors.toList());
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Проверка строки на отсутвие не нужных атрибутов
+     *
+     * @param htmlTableBody передаваемая табличная строка
+     * @return является ли необходиой строкой
+     */
+    private boolean isNecessaryTableBody(HtmlTableBody htmlTableBody) {
+        return (!htmlTableBody.getAttribute(STYLE_ATTRIBUTE).contains(NON_DISPLAY_ATTRIBUTE))
+                && (htmlTableBody.getAttributes() != null && htmlTableBody.getAttributes().getNamedItem(ID_ATTRIBUTE) == null)
+                && (!htmlTableBody.getAttribute(CLASS_ATTRIBUTE).contains(SPACE_ATTRIBUTE));
+    }
+
+    /**
+     * @param tableBody переданная строка таблицы
+     * @return спсиок ячеек строки таблицы
+     */
+    private List<HtmlTableCell> getCellsFromBody(HtmlTableBody tableBody) {
+        return tableBody.getRows().stream()
+                .map(HtmlTableRow::getCells)
+                .flatMap(Collection::stream)
+                .filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    /**
+     * Получить индекс ячейки по переданному наименованию
+     *
+     * @param tableCells ячейки строки
+     * @param cellTitle  наименование ячейки
+     * @return индекс ячейки
+     */
+    private Integer getCellIndex(List<HtmlTableCell> tableCells, String... cellTitle) {
+
+        if (tableCells == null || tableCells.isEmpty()) {
+            return null;
+        }
+
+        for (int i = 0; i < tableCells.size(); i++) {
+            for (String item : cellTitle) {
+                if (StringUtils.equalsIgnoreCase(tableCells.get(i).asText(), item)) {
+                    return i;
+                }
+            }
+
+        }
+        return null;
+    }
+
+    /**
+     * Получение спсика значений ячеек,в случае объедененных ячеек
+     * они разделаются и значение пустое
+     *
+     * @param tableCells ячейки таблицы
+     * @return значения ячеек
+     */
+    private List<String> getDividedColSpanValues(List<HtmlTableCell> tableCells) {
+        List<String> values = new ArrayList<>();
+        for (HtmlTableCell item : tableCells) {
+            if (item.getColumnSpan() > 1) {
+                for (int i = 0; i < item.getColumnSpan(); i++) {
+                    values.add("");
+                }
+            } else {
+                values.add(item.asText());
+            }
+        }
+        return values;
+    }
+
+    /**
+     * Заполнение сущности {@link BetInfo} основнымми переобразованными данными
+     *
+     * @param indexMap  map ключ -наимнование ячейки, значение - индекс ячейки
+     * @param cellsData спсиок значений
+     * @return заполненные данные
+     * @throws ParseException исключение при парсинге даты
+     */
     private BetInfo fillBetInfo(Map<String, Integer> indexMap, List<String> cellsData) throws ParseException {
         BetInfo betInfo = new BetInfo();
         Map<String, CoeffInfo> coefficientsInfo = new HashMap<>();
@@ -344,18 +415,15 @@ public class WebParser {
         return betInfo;
     }
 
-    private List<String> getDividedColSpanValues(List<HtmlTableCell> tableCells) {
-        List<String> values = new ArrayList<>();
-        for (HtmlTableCell item : tableCells) {
-            if (item.getColumnSpan() > 1) {
-                for (int i = 0; i < item.getColumnSpan(); i++) {
-                    values.add("");
-                }
-            } else {
-                values.add(item.asText());
-            }
-        }
-        return values;
+    /**
+     * @param tableBody строка таблицы
+     * @param value     значение сравнения
+     * @return содержит ли строка переданное значение
+     */
+    private boolean isContainsCellValue(HtmlTableBody tableBody, String value) {
+        return !tableBody.getRows().isEmpty()
+                && tableBody.getRows().stream().map(HtmlTableRow::getCells).flatMap(Collection::stream).anyMatch(htmlTableCell -> htmlTableCell.asText().contains(value));
+
     }
 
 }

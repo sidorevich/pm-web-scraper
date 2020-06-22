@@ -24,11 +24,22 @@ import static com.data.model.Const.*;
 public class HtmlGenerator {
     private static final Logger logger = Logger.getLogger(HtmlGenerator.class.getName());
 
+    /**
+     * Сформировать html страницу с данными и записать
+     *
+     * @param sportLobbies Полученные из парсинга данные
+     */
     public static void writeToFileReceivedData(List<SportLobby> sportLobbies) {
         String htmlContent = getHtmContent(sportLobbies);
         writeFile(htmlContent);
     }
 
+    /**
+     * Получить html страницу с заполненной данными таблицей
+     *
+     * @param sportLobbies {@link SportLobby} полуученные данные
+     * @return html страница
+     */
     private static String getHtmContent(List<SportLobby> sportLobbies) {
         try {
             Html htmlPage = new Html(null) {
@@ -190,13 +201,18 @@ public class HtmlGenerator {
         return null;
     }
 
-    private static void writeFile(String data) {
-        if (data == null) {
+    /**
+     * Записать ранее сформированную страницу
+     *
+     * @param htmlPageData сформированная страница
+     */
+    private static void writeFile(String htmlPageData) {
+        if (htmlPageData == null) {
             logger.warning("No data to write!");
             return;
         }
         try {
-            FileUtils.write(new File(REPORT_FILE_PATH), data, "UTF-8");
+            FileUtils.write(new File(REPORT_FILE_PATH), htmlPageData, "UTF-8");
         } catch (Exception e) {
             logger.log(Level.SEVERE, ERROR_MSG, e.getMessage());
             e.printStackTrace();
