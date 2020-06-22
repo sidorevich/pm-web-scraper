@@ -2,26 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17eb6a99-99dc-4e28-accb-cc55f099604d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_io_2_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_lang3_3_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/htmlunit_2_40_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/wffweb_3_0_14.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-io-2.4.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-lang3-3.10.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/htmlunit-2.40.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/wffweb-3.0.14.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/data/model/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/util/Const.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/handler/HtmlGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/handler/HtmlGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/handler/WebParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/handler/WebParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,11 +49,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/com" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/commons-io-2.4.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Новая папка/pm-web-scraper-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15527344" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -116,35 +98,9 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="Run" type="MavenRunConfiguration" factoryName="Maven">
-      <MavenSettings>
-        <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
-        <option name="myRunnerParameters">
-          <MavenRunnerParameters>
-            <option name="profiles">
-              <set />
-            </option>
-            <option name="goals">
-              <list>
-                <option value="exec:java" />
-              </list>
-            </option>
-            <option name="pomFileName" />
-            <option name="profilesMap">
-              <map />
-            </option>
-            <option name="resolveToWorkspace" value="false" />
-            <option name="workingDirPath" value="$PROJECT_DIR$" />
-          </MavenRunnerParameters>
-        </option>
-      </MavenSettings>
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Maven.Parser [clean,install,exec:java]" />
-      <item itemvalue="Maven.Run" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -181,7 +137,7 @@
       <workItem from="1592561791777" duration="557000" />
       <workItem from="1592734705275" duration="37740000" />
       <workItem from="1592811474436" duration="4121000" />
-      <workItem from="1592828013437" duration="15937000" />
+      <workItem from="1592828013437" duration="17743000" />
     </task>
     <task id="LOCAL-00001" summary="Init commit">
       <created>1592561968727</created>
@@ -225,7 +181,21 @@
       <option name="project" value="LOCAL" />
       <updated>1592834363040</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Edit README.md">
+      <created>1592849262554</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1592849262554</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Edit README.md">
+      <created>1592849316558</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1592849316558</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +206,8 @@
     <MESSAGE value="Init commit" />
     <MESSAGE value="Add html generator" />
     <MESSAGE value="Refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor" />
+    <MESSAGE value="Edit README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Edit README.md" />
   </component>
   <component name="WindowStateProjectService">
     <state x="551" y="142" key="#Main" timestamp="1592145918802">
@@ -247,10 +218,10 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="320" y="81" key="#Project_Structure/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592844282432" />
-    <state x="294" y="162" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592844040650">
+    <state x="294" y="162" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592850984758">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="294" y="162" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592844040650" />
+    <state x="294" y="162" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850984758" />
     <state x="595" y="315" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592841434738">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
@@ -289,10 +260,10 @@
     </state>
     <state x="231" y="96" width="1263" height="914" key="#xdebugger.evaluate/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592847932850" />
     <state x="437" y="306" key="#xdebugger.evaluate/0.0.1920.1032@0.0.1920.1032" timestamp="1592516125765" />
-    <state x="452" y="18" key="CommitChangelistDialog2" timestamp="1592834362776">
+    <state x="452" y="18" key="CommitChangelistDialog2" timestamp="1592849316300">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="452" y="18" key="CommitChangelistDialog2/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592834362776" />
+    <state x="452" y="18" key="CommitChangelistDialog2/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592849316300" />
     <state x="517" y="18" key="CommitChangelistDialog2/0.0.1920.1032@0.0.1920.1032" timestamp="1592562002687" />
     <state width="466" height="466" key="DebuggerActiveHint" timestamp="1592846916286">
       <screen x="0" y="0" width="1680" height="1010" />
@@ -308,58 +279,58 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="714" y="256" key="EnvironmentVariablesDialog/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592842025781" />
-    <state x="551" y="248" key="FileChooserDialogImpl" timestamp="1592842678891">
+    <state x="551" y="248" key="FileChooserDialogImpl" timestamp="1592850873390">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="551" y="248" key="FileChooserDialogImpl/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592842678891" />
-    <state width="1636" height="329" key="GridCell.Tab.0.bottom" timestamp="1592848914043">
+    <state x="551" y="248" key="FileChooserDialogImpl/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850873390" />
+    <state width="1636" height="329" key="GridCell.Tab.0.bottom" timestamp="1592850166225">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.0.bottom/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914043" />
+    <state width="1636" height="329" key="GridCell.Tab.0.bottom/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166225" />
     <state width="1864" height="319" key="GridCell.Tab.0.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223491" />
-    <state width="1636" height="329" key="GridCell.Tab.0.center" timestamp="1592848914043">
+    <state width="1636" height="329" key="GridCell.Tab.0.center" timestamp="1592850166225">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.0.center/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914043" />
+    <state width="1636" height="329" key="GridCell.Tab.0.center/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166225" />
     <state width="1864" height="319" key="GridCell.Tab.0.center/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223491" />
-    <state width="1636" height="329" key="GridCell.Tab.0.left" timestamp="1592848914043">
+    <state width="1636" height="329" key="GridCell.Tab.0.left" timestamp="1592850166225">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.0.left/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914043" />
+    <state width="1636" height="329" key="GridCell.Tab.0.left/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166225" />
     <state width="1864" height="319" key="GridCell.Tab.0.left/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223490" />
-    <state width="1636" height="329" key="GridCell.Tab.0.right" timestamp="1592848914043">
+    <state width="1636" height="329" key="GridCell.Tab.0.right" timestamp="1592850166225">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.0.right/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914043" />
+    <state width="1636" height="329" key="GridCell.Tab.0.right/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166225" />
     <state width="1864" height="319" key="GridCell.Tab.0.right/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223491" />
-    <state width="1636" height="329" key="GridCell.Tab.1.bottom" timestamp="1592848914044">
+    <state width="1636" height="329" key="GridCell.Tab.1.bottom" timestamp="1592850166226">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.1.bottom/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914044" />
+    <state width="1636" height="329" key="GridCell.Tab.1.bottom/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166226" />
     <state width="1864" height="319" key="GridCell.Tab.1.bottom/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223492" />
-    <state width="1636" height="329" key="GridCell.Tab.1.center" timestamp="1592848914044">
+    <state width="1636" height="329" key="GridCell.Tab.1.center" timestamp="1592850166226">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.1.center/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914044" />
+    <state width="1636" height="329" key="GridCell.Tab.1.center/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166226" />
     <state width="1864" height="319" key="GridCell.Tab.1.center/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223492" />
-    <state width="1636" height="329" key="GridCell.Tab.1.left" timestamp="1592848914043">
+    <state width="1636" height="329" key="GridCell.Tab.1.left" timestamp="1592850166226">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.1.left/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914043" />
+    <state width="1636" height="329" key="GridCell.Tab.1.left/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166226" />
     <state width="1864" height="319" key="GridCell.Tab.1.left/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223491" />
-    <state width="1636" height="329" key="GridCell.Tab.1.right" timestamp="1592848914044">
+    <state width="1636" height="329" key="GridCell.Tab.1.right" timestamp="1592850166226">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="1636" height="329" key="GridCell.Tab.1.right/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592848914044" />
+    <state width="1636" height="329" key="GridCell.Tab.1.right/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850166226" />
     <state width="1864" height="319" key="GridCell.Tab.1.right/0.0.1920.1032@0.0.1920.1032" timestamp="1592516223492" />
     <state x="381" y="159" key="Maven.ArtifactSearchDialog" timestamp="1591968963196">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="381" y="159" key="Maven.ArtifactSearchDialog/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1591968963196" />
-    <state x="320" y="81" key="SettingsEditor" timestamp="1592842683183">
+    <state x="320" y="81" key="SettingsEditor" timestamp="1592850719045">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="320" y="81" key="SettingsEditor/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592842683183" />
+    <state x="320" y="81" key="SettingsEditor/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592850719045" />
     <state x="561" y="235" width="540" height="524" key="StructurePopup" timestamp="1592746794631">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
@@ -368,10 +339,10 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="731" y="428" key="VCS.EditChangelistDialog/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592845241077" />
-    <state x="395" y="181" key="Vcs.Push.Dialog.v2" timestamp="1592834369717">
+    <state x="395" y="181" key="Vcs.Push.Dialog.v2" timestamp="1592849317328">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="395" y="181" key="Vcs.Push.Dialog.v2/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592834369717" />
+    <state x="395" y="181" key="Vcs.Push.Dialog.v2/0.0.1680.1010/1680.0.1680.1050@0.0.1680.1010" timestamp="1592849317328" />
     <state x="451" y="185" key="Vcs.Push.Dialog.v2/0.0.1920.1032@0.0.1920.1032" timestamp="1592562028841" />
     <state width="848" height="513" key="XDebugger.FullValuePopup" timestamp="1592847932471">
       <screen x="0" y="0" width="1680" height="1010" />
