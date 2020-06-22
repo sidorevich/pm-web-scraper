@@ -6,7 +6,7 @@
  - Если не в maven ,в папке lib находятся все зависимые библиотеки.
   Idea: 
     1) В конфигурации Main,указать Use classpath of module-> pm-web-scraper
-    2) File->ProjectStructure->Libraries , добавить папку lib в корне проекта 
+    2) File->ProjectStructure->Problems , для библиотеки(lib) применить Fix->Add to Dependencies
     3) Далее вкаладка Modules->Dependencies , отмечаем checked на выбранные библиотки, применить-> ок.
     4) Запускаем
  
